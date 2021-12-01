@@ -1,7 +1,0 @@
-{
-  "files.associations": {
-    "*.master": "html",
-    "*.asax": "html",
-    "ostream": "cpp"
-  }
-}
