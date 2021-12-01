@@ -15,7 +15,7 @@ int main(void) {
 
   int p1 = 0;
   int prev_depth = INT32_MAX;
-  for (unsigned long i = 0; i < v.size(); ++i) {
+  for (unsigned long i = 0, n = v.size(); i < n; ++i) {
     if (v[i] > prev_depth) {
       ++p1;
     }
@@ -24,17 +24,10 @@ int main(void) {
   std::cout << "Part 1: " << p1 << std::endl;
 
   int p2 = 0;
-  int prev_sum = INT32_MAX;
-  for (unsigned long i = 0; i <= v.size() - window_size; ++i) {
-    int sum = 0;
-    for (unsigned long j = i; j < i + window_size; ++j) {
-      sum += v[j];
-    }
-
-    if (sum > prev_sum) {
+  for (unsigned long i = 0, n = v.size() - window_size; i < n; ++i) {
+    if (v[i] < v[i + window_size]) {
       ++p2;
     }
-    prev_sum = sum;
   }
   std::cout << "Part 2: " << p2 << std::endl;
 }
