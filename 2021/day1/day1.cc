@@ -1,6 +1,6 @@
 #include <cstdio>
 
-int main(void) {
+int main() {
   fprintf(stdout, "hello, world\n");
 }
 
