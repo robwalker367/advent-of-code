@@ -2,8 +2,14 @@
 #include <string>
 #include <vector>
 
+enum direction {
+  forward,
+  down,
+  up
+};
+
 struct command {
-  std::string direction;
+  direction dir;
   int weight;
 };
 
@@ -13,20 +19,27 @@ int main() {
   int w;
   while (std::cin >> s >> w) {
     command* c = new command;
-    c->direction = s;
+    if (s == "forward") {
+      c->dir = forward;
+    } else if (s == "down") {
+      c->dir = down;
+    } else {
+      c->dir = up;
+    }
     c->weight = w;
     commands.push_back(c);
   }
 
-  int x = 0, depth = 0;
+  int x = 0, depth = 0, aim = 0;
   for (unsigned i = 0, n = commands.size(); i < n; ++i) {
     command* c = commands[i];
-    if (c->direction == "forward") {
+    if (c->dir == forward) {
       x += c->weight;
-    } else if (c->direction == "down") {
-      depth += c->weight;
+      depth += aim * c->weight;
+    } else if (c->dir == down) {
+      aim += c->weight;
     } else {
-      depth -= c->weight;
+      aim -= c->weight;
     }
   }
   std::cout << "Part 1: " << x * depth << std::endl;
