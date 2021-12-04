@@ -6,9 +6,7 @@
 
 long* count_frequencies(std::vector<long>* v) {
   long* f = new long[LENGTH];
-  for (unsigned i = 0; i < LENGTH; ++i) {
-    f[i] = 0;
-  }
+  memset(f, 0, sizeof(long) * LENGTH);
   for (unsigned i = 0; i < v->size(); ++i) {
     long num = (*v)[i];
     for (unsigned j = 0; j < LENGTH; ++j) {
@@ -20,11 +18,10 @@ long* count_frequencies(std::vector<long>* v) {
 }
 
 long bin2dec(long b) {
-  long output = 0;
-  int pos = 1;
+  long output = 0, pos = 0;
   while (b) {
-    output += (b % 10) * pos;
-    pos *= 2;
+    output += (b % 10) << pos;
+    ++pos;
     b /= 10;
   }
   return output;
