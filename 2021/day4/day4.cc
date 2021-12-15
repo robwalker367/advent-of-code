@@ -38,6 +38,8 @@ struct bingo_board {
     }
   }
 
+  // Determine if board has winning position.
+  // Currently only works for square boards.
   bool won() {
     for (int i = 0; i < this->width; ++i) {
       bool row_all_drawn = true;
@@ -111,9 +113,9 @@ int main() {
       b = new bingo_board;
     }
     std::vector<int> row = split(line, ' ');
-    for (unsigned i = 0; i < row.size(); ++i) {
+    for (auto& x : row) {
       bingo_cell* bc = new bingo_cell;
-      bc->num = row[i];
+      bc->num = x;
       b->cells.push_back(bc);
     }
   }
@@ -154,6 +156,7 @@ int main() {
     delete board;
   }
 }
+
 
 // split(s, delimiter)
 //   Splits a string s based on the delimiter.
