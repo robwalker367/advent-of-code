@@ -13,7 +13,7 @@ std::vector<int> split(std::string s, char delimiter);
 
 struct bingo_cell {
   int num;
-  bool drawn = false;
+  bool marked = false;
 };
 
 
@@ -33,7 +33,7 @@ struct bingo_board {
   void mark_num(int x) {
     for (auto& cell : cells) {
       if (cell->num == x) {
-        cell->drawn = true;
+        cell->marked = true;
       }
     }
   }
@@ -42,27 +42,27 @@ struct bingo_board {
   // Currently only works for square boards.
   bool won() {
     for (int i = 0; i < this->width; ++i) {
-      bool row_all_drawn = true;
-      bool col_all_drawn = true;
+      bool row_all_marked = true;
+      bool col_all_marked = true;
       for (int j = 0; j < this->height; ++j) {
-        if (!this->cell(i, j)->drawn) {
-          row_all_drawn = false;
+        if (!this->cell(i, j)->marked) {
+          row_all_marked = false;
         }
-        if (!this->cell(j, i)->drawn) {
-          col_all_drawn = false;
+        if (!this->cell(j, i)->marked) {
+          col_all_marked = false;
         }
       }
-      if (col_all_drawn || row_all_drawn) {
+      if (col_all_marked || row_all_marked) {
         return true;
       }
     }
     return false;
   }
 
-  int sum_undrawn() {
+  int sum_unmarked() {
     int sum = 0;
     for (auto& cell : cells) {
-      if (!cell->drawn) {
+      if (!cell->marked) {
         sum += cell->num;
       }
     }
@@ -73,11 +73,11 @@ struct bingo_board {
     for (int i = 0; i < this->width; ++i) {
       for (int j = 0; j < this->height; ++j) {
         bingo_cell* c = this->cell(i, j);
-        if (c->drawn) {
+        if (c->marked) {
           std::cout << "\033[1m";
         }
         std::cout << this->cell(i, j)->num << " ";
-        if (c->drawn) {
+        if (c->marked) {
           std::cout << "\033[0m";
         }
       }
@@ -92,7 +92,7 @@ struct bingo_board {
 //   Solves day4 for advent of code 2021.
 
 int main() {
-  // Parse drawn numbers
+  // Parse marked numbers
   std::string s;
   std::cin >> s;
   std::vector<int> nums = split(s, ',');
@@ -133,10 +133,10 @@ int main() {
       if (!board->completed && board->won()) {
         board->completed = true;
         if (completed_boards == 0) {
-          std::cout << "P1 score: " << board->sum_undrawn() * num << std::endl;
+          std::cout << "P1 score: " << board->sum_unmarked() * num << std::endl;
         }
         if (++completed_boards == boards.size()) {
-          std::cout << "P2 score: " << board->sum_undrawn() * num << std::endl;
+          std::cout << "P2 score: " << board->sum_unmarked() * num << std::endl;
           break;
         }
       }
