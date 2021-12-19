@@ -27,6 +27,7 @@ struct node {
 // Helper function prototypes
 
 node* read_node(std::string s);
+int count_overlaps(std::map<int, std::map<int, int> >* overlaps, int threshold);
 
 
 // line
@@ -57,8 +58,8 @@ int main() {
     lines.push_back(l);
   }
 
-  // Map coordinate to number of lines covering that coordinate
-  std::map<int, std::map<int, int>> overlaps;
+  // Count overlaps for part 1
+  std::map<int, std::map<int, int> > overlaps;
   for (auto& l : lines) {
     // Only consider horizontal or vertical lines
     if (l->src->x == l->dst->x) {
@@ -74,17 +75,30 @@ int main() {
         ++overlaps[i][l->src->y];
     }
   }
+  int p1 = count_overlaps(&overlaps, 2);
+  std::cout << "P1: " << p1 << std::endl;
 
-  // Count points with 2 or more overlaps
-  int p1_points = 0;
-  for (auto& [_, m] : overlaps) {
-    for (auto& [_, count] : m) {
-      if (count > 1) {
-        ++p1_points;
-      }
+  // Count overlaps for part 2
+  for (auto& l : lines) {
+    if (l->src->x == l->dst->x || l->src->y == l->dst->y) {
+      continue;
+    }
+
+    // Order nodes by x value
+    bool srcx_lt_dstx = l->src->x <= l->dst->x;
+    node* left = srcx_lt_dstx ? l->src : l->dst;
+    node* right = srcx_lt_dstx ? l->dst : l->src;
+
+    // Tally overlaps diagonally
+    int i = left->x, j = left->y;
+    while (i <= right->x) {
+      ++overlaps[i][j];
+      ++i;
+      j += left->y < right->y ? 1 : -1;
     }
   }
-  std::cout << "P1: " << p1_points << std::endl;
+  int p2 = count_overlaps(&overlaps, 2);
+  std::cout << "P2: " << p2 << std::endl;
 
   // Free memory
   for (auto& l : lines) {
@@ -117,5 +131,21 @@ node* read_node(std::string s) {
   }
   node* n = new node(x, y);
   return n;
+}
+
+
+// count_overlaps(overlaps, threshold)
+//   Count the number of overlaps that exceed the threshold.
+
+int count_overlaps(std::map<int, std::map<int, int> >* overlaps, int threshold) {
+  int k = 0;
+  for (auto& [_, m] : *overlaps) {
+    for (auto& [_, count] : m) {
+      if (count >= threshold) {
+        ++k;
+      }
+    }
+  }
+  return k;
 }
 
