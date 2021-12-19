@@ -75,6 +75,7 @@ int main() {
 
   // Count overlaps for part 2
   for (auto& l : lines) {
+    // Skip horizontal or vertical lines
     if (l->src->x == l->dst->x || l->src->y == l->dst->y) {
       continue;
     }
