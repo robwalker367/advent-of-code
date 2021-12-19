@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <cmath>
+#include <cstdio>
 #include <iostream>
 #include <map>
 #include <string>
@@ -12,21 +13,15 @@
 struct node {
   int x;
   int y;
-
   node(int x_, int y_) {
     x = x_;
     y = y_;
-  }
-
-  void print() {
-    std::cout << x << "," << y << std::endl;;
   }
 };
 
 
 // Helper function prototypes
 
-node* read_node(std::string s);
 int count_overlaps(std::map<int, std::map<int, int> >* overlaps, int threshold);
 
 
@@ -49,11 +44,11 @@ struct line {
 
 int main() {
   // Parse input
-  std::string a, arrow, b;
+  int x0, y0, x1, y1;
   std::vector<line*> lines;
-  while (std::cin >> a >> arrow >> b) {
-    node* src = read_node(a);
-    node* dst = read_node(b);
+  while (fscanf(stdin, "%i,%i -> %i,%i", &x0, &y0, &x1, &y1) != EOF) {
+    node* src = new node(x0, y0);
+    node* dst = new node(x1, y1);
     line* l = new line(src, dst);
     lines.push_back(l);
   }
@@ -76,7 +71,7 @@ int main() {
     }
   }
   int p1 = count_overlaps(&overlaps, 2);
-  std::cout << "P1: " << p1 << std::endl;
+  fprintf(stdout, "P1: %i\n", p1);
 
   // Count overlaps for part 2
   for (auto& l : lines) {
@@ -98,7 +93,7 @@ int main() {
     }
   }
   int p2 = count_overlaps(&overlaps, 2);
-  std::cout << "P2: " << p2 << std::endl;
+  fprintf(stdout, "P2: %i\n", p2);
 
   // Free memory
   for (auto& l : lines) {
@@ -106,31 +101,6 @@ int main() {
     delete l->dst;
     delete l;
   }
-}
-
-
-// read_node(s)
-//   Reads a string of format "x,y" where x and y are
-//   integers into a node.
-
-node* read_node(std::string s) {
-  int x = 0, y = 0;
-  bool left_of_comma = true;
-  for (unsigned i = 0, n = s.length(); i < n; ++i) {
-    std::string c = s.substr(i, 1);
-    if (c == ",") {
-      left_of_comma = false;
-      continue;
-    }
-    int num = std::atoi(c.c_str());
-    if (left_of_comma) {
-      x = x * 10 + num;
-    } else {
-      y = y * 10 + num;
-    }
-  }
-  node* n = new node(x, y);
-  return n;
 }
 
 
