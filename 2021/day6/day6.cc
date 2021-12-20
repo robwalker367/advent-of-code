@@ -4,6 +4,7 @@
 
 
 // Number of cycles to breed
+
 const int p1_cycles = 80;
 const int p2_cycles = 256;
 
@@ -14,10 +15,12 @@ const long long total_cycle = 9;
 
 
 // Time for a fish to spawn on its first cycle
+
 const long long fst_spawn_cycle = 8;
 
 
 // Time for a fish to spawn on non-first cycle
+
 const long long std_spawn_cycle = 6;
 
 
