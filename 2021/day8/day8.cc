@@ -191,7 +191,7 @@ bool is_anagram(std::string a, std::string b) {
 }
 
 
-// edit_distance(a, b)
+// dist(a, b)
 //   Calculate the number of characters in `a` that
 //   are not in `b`.
 
