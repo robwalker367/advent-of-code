@@ -16,16 +16,30 @@ almanac_maps = [
 
 def get_mapped_num(num, amap):
     for r in amap:
-        dst, src, rng = [int(x) for x in r.split()]
+        src, dst, rng = [int(x) for x in r.split()]
         if src <= num and num < src + rng:
             return dst + (num - src)
     return num
 
-def get_location_num(seed, almanac_maps):
-    num = seed
+def get_seed_num(loc_num, almanac_maps):
+    num = loc_num
     for amap in almanac_maps:
         num = get_mapped_num(num, amap)
     return num
 
-print(min([get_location_num(seed, almanac_maps) for seed in seeds]))
-    
+# Part 2
+def is_within_seed_range(seeds, seed):
+    for i in range(0, len(seeds), 2):
+        src, rng = seeds[i], seeds[i+1]
+        if src <= seed and seed < src + rng:
+            return True
+    return False
+
+loc_num = 0
+almanac_maps = list(reversed(almanac_maps))
+while True:
+    seed = get_seed_num(loc_num, almanac_maps)
+    if is_within_seed_range(seeds, seed):
+        print(loc_num)
+        break
+    loc_num += 1
